@@ -14,13 +14,13 @@ def screen_capture():
             break
 
 def process_img(original_image):
-    hsv_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2HSV)
+    #hsv_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2HSV)
     gray_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
     ret, binary_img = cv2.threshold(gray_img, 50, 200,cv2.THRESH_BINARY)
     im, contours, hierarchy = cv2.findContours(binary_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
     for c in contours:
         (x,y), radius = cv2.minEnclosingCircle(c)
-        (x0,y0), radius0 = cv2.minEnclosingCircle(contours[5])
+        (x0,y0), radius0 = cv2.minEnclosingCircle(contours[0])
         if (radius > 10):
             li1 = original_image[int(x0), int(y0)]
             li2 = original_image[int(x), int(y)]
@@ -29,6 +29,7 @@ def process_img(original_image):
                 fontColor = (0,255,0)
             else:
                 fontColor = (0,0,255)
+                
             font = cv2.FONT_HERSHEY_SIMPLEX
             cv2.circle(original_image, (int(x), int(y)), 2, (127,0,255),2)
             processed_img = cv2.putText(original_image, str(color), (int(y)-15, int(x)-10), font, 0.35, fontColor)
