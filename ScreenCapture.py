@@ -15,8 +15,10 @@ def screen_capture():
 
 def process_img(original_image):
     #hsv_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2HSV)
-    gray_img = cv2.cvtColor(original_image, cv2.COLOR_BGR2GRAY)
-    ret, binary_img = cv2.threshold(gray_img, 50, 200,cv2.THRESH_BINARY)
+    gray_img = cv2.cvtColor(original_image, cv2.COLOR_RGB2GRAY)
+    grayscale = np.array(gray_img)
+    cv2.decolor(original_image, grayscale)          #改进后的灰度处理，保留了原图像中的对比度，避免了L of Lab灰度处理算法中不同色彩处理后过于接近的弊端
+    ret, binary_img = cv2.threshold(grayscale, 50, 200,cv2.THRESH_BINARY)
     im, contours, hierarchy = cv2.findContours(binary_img, cv2.RETR_TREE, cv2.CHAIN_APPROX_SIMPLE)  
     for c in contours:
         (x,y), radius = cv2.minEnclosingCircle(c)
